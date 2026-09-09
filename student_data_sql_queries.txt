@@ -1,0 +1,26 @@
+CREATE OR ALTER VIEW vw_StudentPerformance AS
+SELECT 
+    StudentID,
+    StudentName,
+    Gender,
+    Department,
+    Attendance_Percentage,
+    Maths_Marks,
+    Physics_Marks,
+    Chemistry_Marks,
+    CS_Marks,
+    (CAST(Maths_Marks AS INT) + CAST(Physics_Marks AS INT) + CAST(Chemistry_Marks AS INT) + CAST(CS_Marks AS INT)) AS Total_Marks,
+    CAST((CAST(Maths_Marks AS INT) + CAST(Physics_Marks AS INT) + CAST(Chemistry_Marks AS INT) + CAST(CS_Marks AS INT)) / 4.0 AS DECIMAL(5,2)) AS Percentage,
+    CASE 
+        WHEN (CAST(Maths_Marks AS INT) + CAST(Physics_Marks AS INT) + CAST(Chemistry_Marks AS INT) + CAST(CS_Marks AS INT)) / 4.0 >= 90 THEN 'A+'
+        WHEN (CAST(Maths_Marks AS INT) + CAST(Physics_Marks AS INT) + CAST(Chemistry_Marks AS INT) + CAST(CS_Marks AS INT)) / 4.0 >= 75 THEN 'A'
+        WHEN (CAST(Maths_Marks AS INT) + CAST(Physics_Marks AS INT) + CAST(Chemistry_Marks AS INT) + CAST(CS_Marks AS INT)) / 4.0 >= 60 THEN 'B'
+        WHEN (CAST(Maths_Marks AS INT) + CAST(Physics_Marks AS INT) + CAST(Chemistry_Marks AS INT) + CAST(CS_Marks AS INT)) / 4.0 >= 40 THEN 'C'
+        ELSE 'Fail'
+    END AS Grade,
+    CASE 
+        WHEN Maths_Marks >= 40 AND Physics_Marks >= 40 AND Chemistry_Marks >= 40 AND CS_Marks >= 40 
+        THEN 'Pass' 
+        ELSE 'Fail' 
+    END AS Pass_Status
+FROM student_result_data;
